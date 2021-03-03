@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		{% for ticket in tickets %}
+		<div class="row">
+			<h5>{{ ticket.name }}</h5>
+			<h5>{{ ticket.start_date }}</h5>
+			<h5>{{ ticket.end_date }}</h5>
+			<h5>{{ ticket.barcode }}</h5>
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}
