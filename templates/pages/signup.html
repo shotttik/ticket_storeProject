@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container ">
+		<div class="row text-center">
+			<div class="col-m12" style="color: red">
+				{% if error %}
+				{{ error }}
+				{% endif %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-4"></div>
+			{% if user.is_authenticated %}
+				<div class="col-4 pt-5">
+				<div class="alert alert-primary text-center" role="alert">
+				  You are already logged in!
+				</div>
+				</div>
+			{% else %}
+			<div class="col-4">
+			<form class="row g-3 pt-3" method="POST" action="{% url 'signup' %}">
+				{% csrf_token %}
+				<div class="row">
+				  <div class="col-md-12">
+				    <label for="inputEmail4" class="form-label">Email</label>
+				    <input type="email" class="form-control" id="inputEmail4" name="email">
+				  </div>
+				</div>
+				<div class="row">
+				  <div class="col-md-12">
+				    <label for="password1" class="form-label">Password</label>
+				    <input type="password" class="form-control" id="password1" name="password1">
+				  </div>
+				</div>
+				<div class="row">
+				  <div class="col-md-12">
+				    <label for="password2" class="form-label">Confirm Password</label>
+				    <input type="password" class="form-control" id="password2" name="password2">
+				  </div>
+				</div>
+				<div class="row">
+				  <div class="col-md-12">
+				    <label for="first_name" class="form-label">First Name</label>
+				    <input type="text" class="form-control" id="first_name" name="first_name">
+				  </div>
+				</div>
+				<div class="row">
+				  <div class="col-md-12">
+				    <label for="last_name" class="form-label">Last Name</label>
+				    <input type="text" class="form-control" id="last_name" name="last_name">
+				  </div>
+				</div>
+				<div class="row">
+			  <div class="col-md-6">
+			    <label for="mobile_phone" class="form-label">Phone number</label>
+			    <input type="text" class="form-control" id="mobile_phone" placeholder="512345678" name="mobile_phone">
+			  </div>
+				</div>
+			  <div class="col-12 text-center">
+			    <button type="submit" class="btn btn-primary">Register</button>
+			  </div>
+			</form>
+				{% endif %}
+			</div>
+			<div class="col-4"></div>
+		</div>
+	</div>
+{% endblock %}

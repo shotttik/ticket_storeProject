@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container ">
+		<div class="row text-center">
+			<div class="col-m12" style="color: red">
+				{% if error %}
+				{{ error }}
+				{% endif %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-4"></div>
+			{% if user.is_authenticated %}
+				<div class="col-4 pt-5">
+				<div class="alert alert-primary text-center" role="alert">
+				  You are already logged in!
+				</div>
+				</div>
+			{% else %}
+			<div class="col-4">
+			<form class="row g-3 pt-4" method="POST" action="{% url 'login' %}">
+			{% csrf_token %}
+				<div class="row">
+				  <div class="col-md-12">
+				    <label for="inputEmail4" class="form-label">Email</label>
+				    <input type="email" class="form-control" id="inputEmail4" name="email">
+				  </div>
+				</div>
+				<div class="row">
+				  <div class="col-md-12">
+				    <label for="password" class="form-label">Password</label>
+				    <input type="password" class="form-control" id="password" name="password">
+				  </div>
+				</div>
+			  <div class="col-12 text-center">
+			    <button type="submit" class="btn btn-primary">Log In</button>
+			  </div>
+			</form>
+				{% endif %}
+			</div>
+			<div class="col-4"></div>
+		</div>
+	</div>
+{% endblock %}
