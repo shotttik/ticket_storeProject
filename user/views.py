@@ -25,8 +25,7 @@ def login(request):
         user = auth.authenticate(email=request.POST['email'], password=request.POST['password'], )
         if user is not None:
             auth.login(request, user)
-            # @TODO redirect to homepage
-            return redirect('login')
+            return redirect('home')
         else:
             return render(request, 'pages/login.html', {'error': 'Email or password is incorrect'})
     return render(request, 'pages/login.html')

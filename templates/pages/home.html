@@ -2,13 +2,64 @@
 
 {% block content %}
 	<div class="container">
-		{% for ticket in tickets %}
 		<div class="row">
-			<h5>{{ ticket.name }}</h5>
-			<h5>{{ ticket.start_date }}</h5>
-			<h5>{{ ticket.end_date }}</h5>
-			<h5>{{ ticket.barcode }}</h5>
+			<div class="col-9">
+				{% for ticket in tickets %}
+					{% if forloop.counter0|divisibleby:3 %}
+						<div class="row" style="justify-content: space-between">
+					{% endif %}
+				<div class="card border-info mb-3" style="max-width: 20rem;">
+					<div class="card-header">{{ ticket.name }}</div>
+					<div class="card-body">
+						<h5 class="card-title">Starts - {{ ticket.start_date }}</h5>
+						<h5 class="card-title">Ends - {{ ticket.end_date }}</h5>
+						<p class="card-text">Barcode - {{ ticket.barcode }}</p>
+						<div class="text-center"><a href="#" class="btn btn-primary">Order Now</a></div>
+					</div>
+				</div>
+				{% if forloop.counter|divisibleby:3 or forloop.last %}
+					</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+			<div class="col-3">
+				<p>
+					<a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button"
+					   aria-expanded="false" aria-controls="multiCollapseExample1">Week</a>
+					<button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+					        data-bs-target="#multiCollapseExample2" aria-expanded="false"
+					        aria-controls="multiCollapseExample2">Month
+					</button>
+					<button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+					        data-bs-target="#multiCollapseExample3" aria-expanded="false"
+					        aria-controls="multiCollapseExample3">Year
+					</button>
+
+				</p>
+				<div class="row">
+					<div class="col">
+						<div class="collapse multi-collapse" id="multiCollapseExample1">
+							<div class="card card-body">
+								first
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="collapse multi-collapse" id="multiCollapseExample2">
+							<div class="card card-body">
+								second
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="collapse multi-collapse" id="multiCollapseExample3">
+							<div class="card card-body">
+								third
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		{% endfor %}
 	</div>
 {% endblock %}
