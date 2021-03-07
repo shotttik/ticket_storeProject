@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-9">
+				<div class="mb-3 row text-center"><h2 style="color: saddlebrown">Owned Tickets</h2></div>
+				{% for order in orders %}
+					{% if forloop.counter0|divisibleby:3 %}
+						<div class="row" style="justify-content: space-around">
+					{% endif %}
+				<div class="card border-info mb-3" style="max-width: 20rem;">
+					<div class="card-header text-center"><h5>{{ order.ticket.name }}</h5></div>
+					<div class="card-body">
+						<p class="card-title"><strong>Starts - </strong>{{ order.ticket.start_date }}</p>
+						<p class="card-title"><strong>Ends - </strong> {{ order.ticket.end_date }}</p>
+						<p class="card-title"><strong>Ordered Date - </strong>{{ order.order_date }}</p>
+						<p class="card-text"><strong>Barcode - </strong> {{ order.ticket.barcode }}</p>
+						<p class="card-text"><strong>Price - </strong> {{ order.price }}</p>
+					</div>
+				</div>
+				{% if forloop.counter|divisibleby:3 or forloop.last %}
+					</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+			<div class="col-3">
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

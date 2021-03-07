@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-2"></div>
+			<div class="col-6 pt-3" >
+				<form method="POST" action="{% url 'ticket_order' ticket.pk %}">
+					{% csrf_token %}
+				<div class="mb-3 row text-center"><h1 style="color: saddlebrown">Order</h1></div>
+				{% if error %}
+					<div class="mb-3 row text-center"><h5 style="color: red">{{ error }}</h5></div>
+				{% endif %}
+					<div class="mb-3 row">
+					<label for="ticketName" class="col-sm-3 col-form-label">Ticket Label</label>
+					<div class="col-sm-8">
+						<input class="form-control" id="ticketName" type="text" placeholder="{{ ticket.name }}"
+						       aria-label="readonly input example" readonly>
+					</div>
+				</div>
+				<div class="mb-3 row">
+					<label for="start_date" class="col-sm-3 col-form-label">Start Date</label>
+					<div class="col-sm-8">
+						<input class="form-control" id="start_date" type="text" placeholder="{{ ticket.start_date }}"
+						       aria-label="readonly input example" readonly>
+					</div>
+				</div>
+				<div class="mb-3 row">
+					<label for="end_date" class="col-sm-3 col-form-label">End Date</label>
+					<div class="col-sm-8">
+						<input class="form-control" id="end_date" type="text" placeholder="{{ ticket.end_date }}"
+						       aria-label="readonly input example" readonly>
+					</div>
+				</div>
+				<div class="mb-3 row">
+					<label for="barcode" class="col-sm-3 col-form-label">Barcode</label>
+					<div class="col-sm-8">
+						<input class="form-control" id="barcode" type="text" placeholder="{{ ticket.barcode }}"
+						       aria-label="readonly input example" readonly>
+					</div>
+				</div>
+				<div class="mb-3 row">
+					<div class="input-group mb-3">
+
+					  <input type="text" class="form-control" placeholder="Price (ex. 15.50)" name="price" required>
+						<span class="input-group-text">$</span>
+					</div>
+				</div>
+				<div class="mb-3 row">
+					<label for="order_date" class="col-sm-3 col-form-label">Order Date</label>
+					<div class="col-sm-8">
+						<input class="form-control" id="order_date" type="text" placeholder="{{ time_now }}"
+						       aria-label="readonly input example" readonly>
+					</div>
+				</div>
+				<div class="mb-3 row">
+					<button type="submit" class="btn btn-primary btn-sm">Accept Order</button>
+				</div>
+				</form>
+			</div>
+			<div class="col-4">
+
+		        <h4 class="d-flex justify-content-between align-items-center mb-3">
+		          <span class="text-muted">Checkout info</span>
+		          <span class="badge bg-secondary rounded-pill">{{ orders_count }}</span>
+		        </h4>
+		        <ul class="list-group mb-3">
+		          <li class="list-group-item d-flex justify-content-between lh-sm">
+		            <div>
+		              <h6 class="my-0">Your Balance</h6>
+		            </div>
+		            <span class="text-muted">${{ user.balance }}</span>
+		          </li>
+		          <li class="list-group-item d-flex justify-content-between lh-sm">
+		            <div>
+		              <h6 class="my-0">Ticket Price</h6>
+		            </div>
+		            <span class="text-muted">{{ ticket.price }}</span>
+		          </li>
+		          <li class="list-group-item d-flex justify-content-between lh-sm">
+		            <div>
+		              <h6 class="my-0">Third item</h6>
+		              <small class="text-muted">Brief description</small>
+		            </div>
+		            <span class="text-muted">$5</span>
+		          </li>
+		          <li class="list-group-item d-flex justify-content-between bg-light">
+		            <div class="text-success">
+		              <h6 class="my-0">Promo code</h6>
+		              <small>EXAMPLECODE</small>
+		            </div>
+		            <span class="text-success">−$5</span>
+		          </li>
+		          <li class="list-group-item d-flex justify-content-between">
+		            <span>Your new balance (USD)</span>
+		            <strong>New Balance</strong>
+		          </li>
+		        </ul>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -4,9 +4,10 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-9">
+				<div class="mb-3 row text-center"><h1 style="color: saddlebrown">Tickets</h1></div>
 				{% for ticket in tickets %}
 					{% if forloop.counter0|divisibleby:3 %}
-						<div class="row" style="justify-content: space-between">
+						<div class="row" style="justify-content: space-around">
 					{% endif %}
 				<div class="card border-info mb-3" style="max-width: 20rem;">
 					<div class="card-header">{{ ticket.name }}</div>
@@ -14,7 +15,7 @@
 						<h5 class="card-title">Starts - {{ ticket.start_date }}</h5>
 						<h5 class="card-title">Ends - {{ ticket.end_date }}</h5>
 						<p class="card-text">Barcode - {{ ticket.barcode }}</p>
-						<div class="text-center"><a href="#" class="btn btn-primary">Order Now</a></div>
+						<div class="text-center"><a href="{% url 'ticket_order' ticket.pk %}" class="btn btn-primary">Order Now</a></div>
 					</div>
 				</div>
 				{% if forloop.counter|divisibleby:3 or forloop.last %}
