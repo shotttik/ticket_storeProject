@@ -4,8 +4,11 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-9">
-				<div class="mb-3 row text-center"><h1 style="color: saddlebrown">Tickets</h1></div>
-				{% for ticket in tickets %}
+
+				<div class="mb-3 row text-center">
+					<h1 style="color: saddlebrown">Tickets - {{ tickets_count }}</h1>
+				</div>
+				{% for ticket in tickets_pag %}
 					{% if forloop.counter0|divisibleby:3 %}
 						<div class="row" style="justify-content: space-around">
 					{% endif %}
@@ -15,18 +18,72 @@
 						<h5 class="card-title">Starts - {{ ticket.start_date }}</h5>
 						<h5 class="card-title">Ends - {{ ticket.end_date }}</h5>
 						<p class="card-text">Barcode - {{ ticket.barcode }}</p>
-						<div class="text-center"><a href="{% url 'ticket_order' ticket.pk %}" class="btn btn-primary">Order Now</a></div>
+						<div class="text-center"><a href="{% url 'ticket_order' ticket.pk %}" class="btn btn-primary">Order
+							Now</a></div>
 					</div>
 				</div>
 				{% if forloop.counter|divisibleby:3 or forloop.last %}
 					</div>
 				{% endif %}
 				{% endfor %}
+
+				{% if tickets_pag.has_other_pages %}
+					<div class="col-6 offset-3 text-center-pagination-set">
+						<nav aria-label="Page navigation">
+							<ul class="pagination">
+
+								{% if tickets_pag.has_previous %}
+									<li class="page-item">
+										<a class="page-link"
+										   href="?page={{ tickets_pag.previous_page_number }}">&laquo;</a>
+									</li>
+								{% else %}
+									<li class="page-item disabled">
+										<a class="page-link">
+											<span aria-hidden="true">&laquo;</span>
+										</a>
+									</li>
+								{% endif %}
+
+								{% for ticket in tickets_pag.paginator.page_range %}
+									{% if tickets_pag.number == ticket %}
+										<li class="page-item">
+											<a class="page-link">
+												{{ ticket }}
+												<span class="sr-only"></span>
+											</a>
+										</li>
+									{% else %}
+										<li class="page-item">
+											<a class="page-link" href="?page={{ ticket }}">{{ ticket }}</a>
+										</li>
+									{% endif %}
+								{% endfor %}
+
+								{% if tickets_pag.has_next %}
+									<li class="page-item"><a class="page-link"
+									                         href="?page={{ tickets_pag.next_page_number }}">
+										&raquo;
+									</a></li>
+								{% else %}
+									<li class="page-item disabled">
+										<a class="page-link">
+											<span aria-hidden="true">&raquo;</span>
+										</a>
+									</li>
+								{% endif %}
+							</ul>
+						</nav>
+					</div>
+				{% endif %}
+
 			</div>
 			<div class="col-3">
 				<p>
-					<a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button"
-					   aria-expanded="false" aria-controls="multiCollapseExample1">Week</a>
+					<button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+					        data-bs-target="#multiCollapseExample1" aria-expanded="false"
+					        aria-controls="multiCollapseExample1">Week
+					</button>
 					<button class="btn btn-primary" type="button" data-bs-toggle="collapse"
 					        data-bs-target="#multiCollapseExample2" aria-expanded="false"
 					        aria-controls="multiCollapseExample2">Month
@@ -37,30 +94,43 @@
 					</button>
 
 				</p>
-				<div class="row">
-					<div class="col">
-						<div class="collapse multi-collapse" id="multiCollapseExample1">
-							<div class="card card-body">
-								first
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="collapse multi-collapse" id="multiCollapseExample2">
-							<div class="card card-body">
-								second
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="collapse multi-collapse" id="multiCollapseExample3">
-							<div class="card card-body">
-								third
+
+				<div class="col">
+					<div class="collapse multi-collapse" id="multiCollapseExample1">
+						<div class="card card-body">
+							<div class="card-text">
+								<h5 style="color: darkgreen">Last Week</h5>
+								<strong>Paid:</strong>{{ paid_last_week }}<strong>$</strong>
+								<strong>Bought:</strong>{{ bought_last_week }}
 							</div>
 						</div>
 					</div>
 				</div>
+				<div class="col">
+					<div class="collapse multi-collapse" id="multiCollapseExample2">
+						<div class="card card-body">
+							<div class='card-text'>
+								<h5 style="color: saddlebrown">Last Month</h5>
+								<strong>Paid:</strong>{{ paid_last_month }}<strong>$</strong>
+								<strong>Bought:</strong>{{ bought_last_month }}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div class="collapse multi-collapse" id="multiCollapseExample3">
+						<div class="card card-body">
+							<div class="card-text">
+								<h5 style="color: red">Last Year</h5>
+								<strong>Paid:</strong>{{ paid_last_year }}<strong>$</strong>
+								<strong>Bought:</strong>{{ bought_last_year }}</div>
+						</div>
+					</div>
+				</div>
+
+
 			</div>
+
 		</div>
 	</div>
 {% endblock %}
