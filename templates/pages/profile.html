@@ -5,6 +5,9 @@
 		<div class="row">
 			<div class="col-9">
 				<div class="mb-3 row text-center">
+					{% if user.is_superuser %}
+						<h1>Superuser</h1>
+					{% endif %}
 					<div class="row">
 						<form class="row gx-3 gy-2 align-items-center" method="get" action=".">
 							<div class="col-sm-3">

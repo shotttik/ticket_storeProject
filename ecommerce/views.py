@@ -2,11 +2,13 @@ from decimal import Decimal
 from typing import Optional, Dict
 
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Sum, Count, Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
+from ecommerce.forms import TicketForm
 from ecommerce.models import Ticket, Order
 from user.models import User
 
@@ -92,3 +94,30 @@ def profile(request):
                                                   'orders_count': orders.count(),
                                                   'user_balance': user_balance,
                                                   **ticket_orders_info})
+
+
+def add_ticket(request):
+    ticket_form = TicketForm()
+    if request.method == 'POST':
+        ticket_form = TicketForm(request.POST)
+        try:
+            if ticket_form.is_valid():
+                ticket: Ticket = ticket_form.save(commit=False)
+                ticket.save()
+                return redirect('home')
+        except ValidationError:
+            form_valid_error = 'Form is not valid Please fill correctly.'
+            return render(request, 'pages/add_ticket.html',
+                          {'user_balance': User.objects.get(id=request.user.id).balance,
+                           'ticket_form': ticket_form,
+                           'form_valid_error': form_valid_error})
+    return render(request, 'pages/add_ticket.html', {'user_balance': User.objects.get(id=request.user.id).balance,
+                                                     'ticket_form': ticket_form})
+
+
+def del_ticket(request, pk):
+    ticket = get_object_or_404(Ticket, id=pk)
+    if request.method == 'POST':
+        print(ticket.name)
+        ticket.delete()
+    return redirect('home')

@@ -18,8 +18,19 @@
 						<h5 class="card-title">Starts - {{ ticket.start_date }}</h5>
 						<h5 class="card-title">Ends - {{ ticket.end_date }}</h5>
 						<p class="card-text">Barcode - {{ ticket.barcode }}</p>
+						{% if user.is_not_superuser %}
 						<div class="text-center"><a href="{% url 'ticket_order' ticket.pk %}" class="btn btn-primary">Order
 							Now</a></div>
+						{% endif %}
+						{% if user.is_superuser %}
+							<div class="text-center pt-1">
+							<form action="/del-ticket/{{ ticket.id }}" method="POST">
+								{% csrf_token %}
+								<button type="submit" class="btn btn-danger">Delete</button>
+							</form>
+
+							</div>
+						{% endif %}
 					</div>
 				</div>
 				{% if forloop.counter|divisibleby:3 or forloop.last %}
