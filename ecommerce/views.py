@@ -4,7 +4,7 @@ from typing import Optional, Dict
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Sum, Count, Q
+from django.db.models import Sum, Count, Q, Max, Avg, Min
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
@@ -16,6 +16,7 @@ from user.models import User
 @login_required(login_url='user/login')
 def home(request):
     tickets = Ticket.objects.filter(orders__isnull=True)
+    tickets_created = Ticket.objects.all().count()
     user = User.objects.get(id=request.user.id)
     user_balance = user.balance
     ticket_orders_info: Dict[str, Optional[Decimal]] = user.orders.all().aggregate(
@@ -36,12 +37,23 @@ def home(request):
     except EmptyPage:
         tickets_pag = paginator.page(paginator.num_pages)
 
+    orders = Order.objects.all()
+    tickets_price = orders.aggregate(maxp_ticket=Max('price'), avgp_ticket=Avg('price'), minp_ticket=Min('price'))
+    profit = orders.aggregate(profit=Sum('price'))
+    customers_count = User.objects.filter(is_staff=False).count()
+    staff_count = User.objects.filter(is_staff=True).count()
     return render(request, 'pages/home.html',
                   {'tickets': tickets,
                    **ticket_orders_info,
                    'tickets_count': tickets.count(),
                    'user_balance': user_balance,
-                   'tickets_pag': tickets_pag})
+                   'tickets_pag': tickets_pag,
+                   'tickets_created': tickets_created,
+                   'tickets_sold': tickets_created - tickets.count(),
+                   **tickets_price,
+                   **profit,
+                   'customers_count': customers_count,
+                   'staff_count': staff_count})
 
 
 @login_required(login_url='user/login')

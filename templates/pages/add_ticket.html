@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-4"></div>
+			<div class="col-4">
+				<form method="POST" action="{% url 'add_ticket' %}" autocomplete="off" novalidate>
+					{% csrf_token %}
+					<div class="row text-center">
+						<h1 style="color: darkgreen">Ticket form</h1>
+					</div>
+
+					<div class="row">
+						<label for="{{ ticket_form.name.id_for_label }}">Name</label>
+						{{ ticket_form.name }}
+						{% for error in ticket_form.errors.name %}
+							<p class="error">{{ error }}</p>
+						{% endfor %}
+					</div>
+
+					<div class="row">
+						<label for="{{ ticket_form.start_date.id_for_label }}">Start Date</label>
+						{{ ticket_form.start_date }}
+						{% for error in ticket_form.errors.start_date %}
+							<p class="error">{{ error }}</p>
+						{% endfor %}
+					</div>
+
+					<div class="row">
+						<label for="{{ ticket_form.end_date.id_for_label }}">End Date</label>
+						{{ ticket_form.end_date }}
+						{% for error in ticket_form.errors.end_date %}
+							<p class="error">{{ error }}</p>
+						{% endfor %}
+					</div>
+
+					<div class="row">
+						<label for="{{ ticket_form.barcode.id_for_label }}">Barcode</label>
+						{{ ticket_form.barcode }}
+						{% for error in ticket_form.errors.barcode %}
+							<p class="error">{{ error }}</p>
+						{% endfor %}
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-4"></div>
+						<div class="col-4">
+							<div class="column">
+								<button type="submit" class="btn btn-primary">Add Order</button>
+							</div>
+						</div>
+						<div class="col-4"></div>
+
+					</div>
+
+				</form>
+
+			</div>
+			<div class="col-4"></div>
+
+		</div>
+	</div>
+
+	 <style>
+	    .error{
+		    color: red;
+	    }
+	 </style>
+
+{% endblock %}

@@ -6,7 +6,7 @@
 			<div class="col-9">
 
 				<div class="mb-3 row text-center">
-					<h1 style="color: saddlebrown">Tickets - {{ tickets_count }}</h1>
+					<h1 style="color: orangered">Active Tickets - {{ tickets_count }}</h1>
 				</div>
 				{% for ticket in tickets_pag %}
 					{% if forloop.counter0|divisibleby:3 %}
@@ -19,16 +19,16 @@
 						<h5 class="card-title">Ends - {{ ticket.end_date }}</h5>
 						<p class="card-text">Barcode - {{ ticket.barcode }}</p>
 						{% if user.is_not_superuser %}
-						<div class="text-center"><a href="{% url 'ticket_order' ticket.pk %}" class="btn btn-primary">Order
-							Now</a></div>
+							<div class="text-center"><a href="{% url 'ticket_order' ticket.pk %}"
+							                            class="btn btn-primary">Order
+								Now</a></div>
 						{% endif %}
 						{% if user.is_superuser %}
 							<div class="text-center pt-1">
-							<form action="/del-ticket/{{ ticket.id }}" method="POST">
-								{% csrf_token %}
-								<button type="submit" class="btn btn-danger">Delete</button>
-							</form>
-
+								<form action="/del-ticket/{{ ticket.id }}" method="POST">
+									{% csrf_token %}
+									<button type="submit" class="btn btn-danger">Delete</button>
+								</form>
 							</div>
 						{% endif %}
 					</div>
@@ -90,54 +90,79 @@
 
 			</div>
 			<div class="col-3">
-				<p>
-					<button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-					        data-bs-target="#multiCollapseExample1" aria-expanded="false"
-					        aria-controls="multiCollapseExample1">Week
-					</button>
-					<button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-					        data-bs-target="#multiCollapseExample2" aria-expanded="false"
-					        aria-controls="multiCollapseExample2">Month
-					</button>
-					<button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-					        data-bs-target="#multiCollapseExample3" aria-expanded="false"
-					        aria-controls="multiCollapseExample3">Year
-					</button>
+				{% if user.is_superuser %}
+					<ul class="list-group">
+						<li class="list-group-item active" aria-current="true">About Store</li>
+						<li class="list-group-item">Tickets created - <strong>{{ tickets_created }}</strong></li>
+						<li class="list-group-item">Tickets sold - <strong>{{ tickets_sold }}</strong></li>
+						<li class="list-group-item">Profit - <strong style="color: darkgreen">{{ profit }} $</strong>
+						</li>
+						<li class="list-group-item">Max price ticket sold - <strong
+								style="color: darkgreen">{{ maxp_ticket }} $</strong></li>
+						<li class="list-group-item">Min price ticket sold - <strong
+								style="color: darkgreen">{{ minp_ticket }} $</strong></li>
+						<li class="list-group-item">Avg price ticket sold - <strong
+								style="color: darkgreen">{{ avgp_ticket }} $</strong></li>
 
-				</p>
+					</ul>
+					<ul class="list-group pt-3">
+						<li class="list-group-item active" aria-current="true">About Users</li>
+						<li class="list-group-item">Active staff - <strong>{{ staff_count }}</strong></li>
+						<li class="list-group-item">Customers registered - <strong>{{ customers_count }}</strong></li>
+					</ul>
+				{% endif %}
+				{% if user.is_not_superuser %}
+					<p>
+						<button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+						        data-bs-target="#multiCollapseExample1" aria-expanded="false"
+						        aria-controls="multiCollapseExample1">Week
+						</button>
+						<button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+						        data-bs-target="#multiCollapseExample2" aria-expanded="false"
+						        aria-controls="multiCollapseExample2">Month
+						</button>
+						<button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+						        data-bs-target="#multiCollapseExample3" aria-expanded="false"
+						        aria-controls="multiCollapseExample3">Year
+						</button>
 
-				<div class="col">
-					<div class="collapse multi-collapse" id="multiCollapseExample1">
-						<div class="card card-body">
-							<div class="card-text">
-								<h5 style="color: darkgreen">Last Week</h5>
-								<strong>Paid:</strong>{{ paid_last_week }}<strong>$</strong>
-								<strong>Bought:</strong>{{ bought_last_week }}
+					</p>
+
+					<div class="col">
+						<div class="collapse multi-collapse" id="multiCollapseExample1">
+							<div class="card card-body">
+								<div class="card-text">
+									<h5 style="color: darkgreen">Last Week</h5>
+									<strong>Paid:</strong>{{ paid_last_week }}<strong>$</strong>
+									<strong>Bought:</strong>{{ bought_last_week }}
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col">
-					<div class="collapse multi-collapse" id="multiCollapseExample2">
-						<div class="card card-body">
-							<div class='card-text'>
-								<h5 style="color: saddlebrown">Last Month</h5>
-								<strong>Paid:</strong>{{ paid_last_month }}<strong>$</strong>
-								<strong>Bought:</strong>{{ bought_last_month }}
+					<div class="col">
+						<div class="collapse multi-collapse" id="multiCollapseExample2">
+							<div class="card card-body">
+								<div class='card-text'>
+									<h5 style="color: saddlebrown">Last Month</h5>
+									<strong>Paid:</strong>{{ paid_last_month }}<strong>$</strong>
+									<strong>Bought:</strong>{{ bought_last_month }}
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col">
-					<div class="collapse multi-collapse" id="multiCollapseExample3">
-						<div class="card card-body">
-							<div class="card-text">
-								<h5 style="color: red">Last Year</h5>
-								<strong>Paid:</strong>{{ paid_last_year }}<strong>$</strong>
-								<strong>Bought:</strong>{{ bought_last_year }}</div>
+					<div class="col">
+						<div class="collapse multi-collapse" id="multiCollapseExample3">
+							<div class="card card-body">
+								<div class="card-text">
+									<h5 style="color: red">Last Year</h5>
+									<strong>Paid:</strong>{{ paid_last_year }}<strong>$</strong>
+									<strong>Bought:</strong>{{ bought_last_year }}</div>
+							</div>
 						</div>
 					</div>
-				</div>
+
+				{% endif %}
+				<!-- Button trigger modal -->
 
 
 			</div>
